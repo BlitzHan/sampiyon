@@ -119,7 +119,7 @@ body {
 /* === TEAMS GRID === */
 .teams-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   align-items: start;
 }
@@ -273,30 +273,30 @@ body {
 }
 
 .btn-outcome {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 2px solid transparent;
-  background: transparent;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
   color: #fff;
   font-weight: 800;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.4;
+  opacity: 0.7;
 }
-.btn-outcome:hover { opacity: 0.75; transform: scale(1.08); }
+.btn-outcome:hover { opacity: 1; transform: scale(1.1); }
 
-.btn-w { color: var(--win-color); }
-.btn-d { color: var(--draw-color); }
-.btn-l { color: var(--loss-color); }
+.btn-w { color: var(--win-color); border-color: rgba(34,197,94,0.4); }
+.btn-d { color: var(--draw-color); border-color: rgba(234,179,8,0.4); }
+.btn-l { color: var(--loss-color); border-color: rgba(239,68,68,0.4); }
 
-.btn-w.active { background: var(--win-color); color: #fff; opacity: 1; box-shadow: 0 0 12px rgba(34,197,94,0.5); }
-.btn-d.active { background: var(--draw-color); color: #fff; opacity: 1; box-shadow: 0 0 12px rgba(234,179,8,0.5); }
-.btn-l.active { background: var(--loss-color); color: #fff; opacity: 1; box-shadow: 0 0 12px rgba(239,68,68,0.5); }
+.btn-w.active { background: var(--win-color); color: #fff; opacity: 1; border-color: var(--win-color); box-shadow: 0 0 12px rgba(34,197,94,0.5); }
+.btn-d.active { background: var(--draw-color); color: #fff; opacity: 1; border-color: var(--draw-color); box-shadow: 0 0 12px rgba(234,179,8,0.5); }
+.btn-l.active { background: var(--loss-color); color: #fff; opacity: 1; border-color: var(--loss-color); box-shadow: 0 0 12px rgba(239,68,68,0.5); }
 
 /* === FOOTER === */
 .footer { text-align: center; margin-top: 2rem; padding: 1rem; color: #475569; font-size: 0.8rem; }
