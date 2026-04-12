@@ -404,11 +404,17 @@ function sharePrediction() {
   const originalText = btn.innerHTML;
   btn.innerHTML = '⏳ Hazırlanıyor...';
   
-  const target = document.querySelector('.standings-section');
+  // Capture the entire app instead of just the standings, so match predictions are included.
+  const target = document.querySelector('.app-container');
   
-  // To avoid box-shadow issues or borders on canvas, we slightly modify its style before capture if needed
-  // Alternatively just capture as is.
-  html2canvas(target, { backgroundColor: '#0B0E14', scale: 2 }).then(canvas => {
+  html2canvas(target, { 
+    backgroundColor: '#0B0E14', 
+    scale: 2,
+    ignoreElements: (node) => {
+      // Hide the buttons inside the screenshot so it looks cleaner
+      return node.classList && node.classList.contains('actions-bar');
+    }
+  }).then(canvas => {
     const link = document.createElement('a');
     link.download = 'Sampiyonluk-Tahminim.png';
     link.href = canvas.toDataURL('image/png');
