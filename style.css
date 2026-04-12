@@ -176,14 +176,33 @@ body {
 }
 
 .team-dot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.team-dot::before,
+.team-dot::after {
+  content: '';
+  display: block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  border: 1px solid transparent; /* Keeps all dots perfectly identical in size even if one gets a specific border */
+  box-sizing: border-box;
 }
-.dot-gs { background: var(--brand-gs); box-shadow: 0 0 8px var(--brand-gs); }
-.dot-fb { background: var(--brand-fb); box-shadow: 0 0 8px var(--brand-fb); }
-.dot-ts { background: var(--brand-ts); box-shadow: 0 0 8px var(--brand-ts); }
-.dot-bjk { background: var(--brand-bjk); box-shadow: 0 0 8px var(--brand-bjk); }
+
+.dot-gs::before { background: #FACC15; box-shadow: 0 0 6px 1px rgba(250, 204, 21, 0.9); }
+.dot-gs::after { background: #A01026; box-shadow: 0 0 6px 1px rgba(160, 16, 38, 0.9); }
+
+.dot-fb::before { background: #FACC15; box-shadow: 0 0 6px 1px rgba(250, 204, 21, 0.9); }
+.dot-fb::after { background: #00235B; box-shadow: 0 0 6px 1px rgba(0, 35, 91, 0.9); border: 1px solid rgba(255,255,255,0.15); }
+
+.dot-ts::before { background: #800020; box-shadow: 0 0 6px 1px rgba(128, 0, 32, 0.9); border: 1px solid rgba(255,255,255,0.15); }
+.dot-ts::after { background: #61C2E4; box-shadow: 0 0 6px 1px rgba(97, 194, 228, 0.9); }
+
+.dot-bjk::before { background: #111111; box-shadow: 0 0 5px 1px rgba(100, 100, 100, 0.4); border: 1px solid rgba(255,255,255,0.3); }
+.dot-bjk::after { background: #FFFFFF; box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.8); }
 
 .standings-table .pts-col { font-weight: 800; font-size: 1.05rem; }
 
