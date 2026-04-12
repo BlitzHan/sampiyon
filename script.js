@@ -15,6 +15,22 @@ const fbMatches = [
   { id: 'fb-5', week: '34. Hafta', opponent: 'Eyüpspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
 ];
 
+const tsMatches = [
+  { id: 'ts-1', week: '30. Hafta', opponent: 'Başakşehir', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'ts-2', week: '31. Hafta', opponent: 'Konyaspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'ts-3', week: '32. Hafta', opponent: 'Göztepe', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'ts-4', week: '33. Hafta', opponent: 'Beşiktaş', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'ts-5', week: '34. Hafta', opponent: 'Gençlerbirliği', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
+];
+
+const bjkMatches = [
+  { id: 'bjk-1', week: '30. Hafta', opponent: 'Samsunspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'bjk-2', week: '31. Hafta', opponent: 'F. Karagümrük', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'bjk-3', week: '32. Hafta', opponent: 'Gaziantep FK', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'bjk-4', week: '33. Hafta', opponent: 'Trabzonspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'bjk-5', week: '34. Hafta', opponent: 'Ç. Rizespor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
+];
+
 function getPoints(outcome) {
   if (outcome === 'W') return 3;
   if (outcome === 'D') return 1;
@@ -25,8 +41,8 @@ function getPoints(outcome) {
 const state = {
   GS: {
     basePoints: 68,
-    baseGF: 67,   // Atılan Gol
-    baseGA: 22,   // Yenen Gol
+    baseGF: 67,
+    baseGA: 22,
     matches: gsMatches.map(m => ({...m}))
   },
   FB: {
@@ -34,6 +50,18 @@ const state = {
     baseGF: 66,
     baseGA: 28,
     matches: fbMatches.map(m => ({...m}))
+  },
+  TS: {
+    basePoints: 64,
+    baseGF: 54,
+    baseGA: 29,
+    matches: tsMatches.map(m => ({...m}))
+  },
+  BJK: {
+    basePoints: 55,
+    baseGF: 54,
+    baseGA: 35,
+    matches: bjkMatches.map(m => ({...m}))
   }
 };
 
@@ -41,8 +69,8 @@ const state = {
 const standingsBase = [
   { key: 'GS', name: '🟡🔴 Galatasaray', played: 29, won: 21, drawn: 5, lost: 3, gf: 67, ga: 22, pts: 68, dynamic: true },
   { key: 'FB', name: '💛💙 Fenerbahçe', played: 29, won: 19, drawn: 9, lost: 1, gf: 66, ga: 28, pts: 66, dynamic: true },
-  { key: 'TS', name: '🔵🟤 Trabzonspor', played: 29, won: 19, drawn: 7, lost: 3, gf: 54, ga: 29, pts: 64, dynamic: false },
-  { key: 'BJK', name: '⬛⬜ Beşiktaş', played: 29, won: 16, drawn: 7, lost: 6, gf: 54, ga: 35, pts: 55, dynamic: false },
+  { key: 'TS', name: '🔵🟤 Trabzonspor', played: 29, won: 19, drawn: 7, lost: 3, gf: 54, ga: 29, pts: 64, dynamic: true },
+  { key: 'BJK', name: '⬛⬜ Beşiktaş', played: 29, won: 16, drawn: 7, lost: 6, gf: 54, ga: 35, pts: 55, dynamic: true },
 ];
 
 function renderStandings() {
@@ -83,9 +111,8 @@ function renderStandings() {
 
   const tbody = document.getElementById('standings-body');
   tbody.innerHTML = rows.map((r, i) => {
-    const isGS = r.key === 'GS';
-    const isFB = r.key === 'FB';
-    const rowClass = isGS ? 'row-gs' : isFB ? 'row-fb' : '';
+    const rowClassMap = { GS: 'row-gs', FB: 'row-fb', TS: 'row-ts', BJK: 'row-bjk' };
+    const rowClass = rowClassMap[r.key] || '';
     return `<tr class="${rowClass}">
       <td>${i + 1}</td>
       <td class="team-col">${r.name}</td>
@@ -140,7 +167,7 @@ function renderMatches(team, containerId) {
 }
 
 function updatePoints() {
-  ['GS', 'FB'].forEach(team => {
+  ['GS', 'FB', 'TS', 'BJK'].forEach(team => {
     const t = state[team];
     const earnedPts = t.matches.reduce((s, m) => s + (m.outcome ? getPoints(m.outcome) : 0), 0);
     const totalPts = t.basePoints + earnedPts;
@@ -164,18 +191,19 @@ function updatePoints() {
     document.getElementById(`ga-${abbr}`).textContent = totalGA;
   });
 
-  // Leader highlight
-  const gsTotal = state.GS.basePoints + state.GS.matches.reduce((s, m) => s + (m.outcome ? getPoints(m.outcome) : 0), 0);
-  const fbTotal = state.FB.basePoints + state.FB.matches.reduce((s, m) => s + (m.outcome ? getPoints(m.outcome) : 0), 0);
+  // Leader highlight - en yüksek puanlı kartı vurgula
+  const teamKeys = ['GS', 'FB', 'TS', 'BJK'];
+  const totals = teamKeys.map(t => ({
+    key: t,
+    pts: state[t].basePoints + state[t].matches.reduce((s, m) => s + (m.outcome ? getPoints(m.outcome) : 0), 0)
+  }));
+  const maxPts = Math.max(...totals.map(t => t.pts));
 
-  const gsCard = document.getElementById('card-gs');
-  const fbCard = document.getElementById('card-fb');
-
-  gsCard.classList.remove('leader');
-  fbCard.classList.remove('leader');
-
-  if (gsTotal > fbTotal) gsCard.classList.add('leader');
-  else if (fbTotal > gsTotal) fbCard.classList.add('leader');
+  teamKeys.forEach(t => {
+    const card = document.getElementById(`card-${t.toLowerCase()}`);
+    card.classList.remove('leader');
+    if (totals.find(x => x.key === t).pts === maxPts) card.classList.add('leader');
+  });
 
   // Update standings table
   renderStandings();
@@ -184,7 +212,8 @@ function updatePoints() {
 // ===== BAĞLI MAÇLAR (Derbi senkronizasyonu) =====
 // GS index 1 (vs Fenerbahçe) <-> FB index 1 (vs Galatasaray)
 const linkedMatches = [
-  { teamA: 'GS', indexA: 1, teamB: 'FB', indexB: 1 }
+  { teamA: 'GS', indexA: 1, teamB: 'FB', indexB: 1 },  // 31. Hafta GS-FB
+  { teamA: 'TS', indexA: 3, teamB: 'BJK', indexB: 3 }   // 33. Hafta TS-BJK
 ];
 
 function getLinkedMatch(team, index) {
@@ -266,7 +295,7 @@ window.setScore = function(team, index, type, value) {
 };
 
 // Base input listeners
-['gs', 'fb'].forEach(abbr => {
+['gs', 'fb', 'ts', 'bjk'].forEach(abbr => {
   const team = abbr.toUpperCase();
   document.getElementById(`base-${abbr}`).addEventListener('input', e => {
     state[team].basePoints = parseInt(e.target.value) || 0;
@@ -284,6 +313,5 @@ window.setScore = function(team, index, type, value) {
 
 // Init
 renderStandings();
-renderMatches('GS', 'fixtures-gs');
-renderMatches('FB', 'fixtures-fb');
+['GS', 'FB', 'TS', 'BJK'].forEach(t => renderMatches(t, `fixtures-${t.toLowerCase()}`));
 updatePoints();

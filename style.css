@@ -103,6 +103,16 @@ body {
 }
 .standings-table tr.row-fb:hover { background: rgba(0,35,91,0.25); }
 
+.standings-table tr.row-ts {
+  background: rgba(75,0,18,0.12);
+}
+.standings-table tr.row-ts:hover { background: rgba(75,0,18,0.2); }
+
+.standings-table tr.row-bjk {
+  background: rgba(100,100,100,0.1);
+}
+.standings-table tr.row-bjk:hover { background: rgba(100,100,100,0.18); }
+
 .standings-table .av-col { color: var(--win-color); font-weight: 700; }
 .standings-table .pts-col { font-size: 1rem; color: #facc15; }
 
@@ -136,6 +146,8 @@ body {
 
 .gs-header { background: linear-gradient(135deg, rgba(160,16,38,0.55) 0%, rgba(250,204,21,0.25) 100%); }
 .fb-header { background: linear-gradient(135deg, rgba(0,35,91,0.7) 0%, rgba(250,204,21,0.25) 100%); }
+.ts-header { background: linear-gradient(135deg, rgba(75,0,18,0.6) 0%, rgba(0,82,147,0.5) 100%); }
+.bjk-header { background: linear-gradient(135deg, rgba(30,30,30,0.8) 0%, rgba(200,200,200,0.15) 100%); }
 
 .team-header h2 {
   font-size: 1.6rem;
