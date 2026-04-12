@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Şampiyonluk Hesaplama - Süper Lig 2025/26</title>
+  <meta name="description" content="Galatasaray ve Fenerbahçe'nin kalan maçlarını tahmin edin, puan ve averaj hesaplayın.">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <h1>⚽ Süper Lig Şampiyonluk Hesaplama</h1>
+      <p class="subtitle">Kalan maçların sonuçlarını ve skorlarını girin — puan ve averajı canlı takip edin</p>
+      <p class="date-info">📅 12 Nisan 2026 · 29. Hafta tamamlandı · 5 maç kaldı</p>
+    </header>
+
+    <div class="teams-container">
+      <!-- ===== GALATASARAY ===== -->
+      <div class="team-card" id="card-gs">
+        <div class="team-header gs-header">
+          <h2>🟡🔴 Galatasaray</h2>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <span class="stat-label">Mevcut Puan</span>
+              <input type="number" id="base-gs" value="68" class="stat-input">
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">AG</span>
+              <input type="number" id="basegf-gs" value="67" class="stat-input small">
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">YG</span>
+              <input type="number" id="basega-gs" value="22" class="stat-input small">
+            </div>
+          </div>
+          <div class="totals-bar">
+            <div class="total-item">
+              <span class="total-label">Toplam Puan</span>
+              <span class="total-value" id="total-gs">68 P</span>
+            </div>
+            <div class="total-item">
+              <span class="total-label">AG</span>
+              <span class="total-value small" id="gf-gs">67</span>
+            </div>
+            <div class="total-item">
+              <span class="total-label">YG</span>
+              <span class="total-value small" id="ga-gs">22</span>
+            </div>
+            <div class="total-item">
+              <span class="total-label">Averaj</span>
+              <span class="total-value averaj" id="averaj-gs">+45</span>
+            </div>
+          </div>
+        </div>
+        <div class="fixtures-list" id="fixtures-gs"></div>
+      </div>
+
+      <!-- ===== FENERBAHÇE ===== -->
+      <div class="team-card" id="card-fb">
+        <div class="team-header fb-header">
+          <h2>💛💙 Fenerbahçe</h2>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <span class="stat-label">Mevcut Puan</span>
+              <input type="number" id="base-fb" value="66" class="stat-input">
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">AG</span>
+              <input type="number" id="basegf-fb" value="66" class="stat-input small">
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">YG</span>
+              <input type="number" id="basega-fb" value="28" class="stat-input small">
+            </div>
+          </div>
+          <div class="totals-bar">
+            <div class="total-item">
+              <span class="total-label">Toplam Puan</span>
+              <span class="total-value" id="total-fb">66 P</span>
+            </div>
+            <div class="total-item">
+              <span class="total-label">AG</span>
+              <span class="total-value small" id="gf-fb">66</span>
+            </div>
+            <div class="total-item">
+              <span class="total-label">YG</span>
+              <span class="total-value small" id="ga-fb">28</span>
+            </div>
+            <div class="total-item">
+              <span class="total-label">Averaj</span>
+              <span class="total-value averaj" id="averaj-fb">+38</span>
+            </div>
+          </div>
+        </div>
+        <div class="fixtures-list" id="fixtures-fb"></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Veriler <a href="https://www.mackolik.com" target="_blank">Mackolik.com</a> kaynaklıdır · G = Galibiyet (+3) · B = Beraberlik (+1) · M = Mağlubiyet (0)</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
