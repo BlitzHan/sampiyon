@@ -390,3 +390,33 @@ if (savedState) {
 renderStandings();
 TEAMS.forEach(t => renderMatches(t, `fixtures-${t.toLowerCase()}`));
 updatePoints();
+
+// ===== ACTIONS =====
+function resetPredictions() {
+  if(confirm("Tüm tahminlerinizi silip orijinal puan durumuna dönmek istediğinize emin misiniz?")) {
+    localStorage.removeItem('sampiyonSimulatorState');
+    location.reload();
+  }
+}
+
+function sharePrediction() {
+  const btn = document.getElementById('btn-share');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '⏳ Hazırlanıyor...';
+  
+  const target = document.querySelector('.standings-section');
+  
+  // To avoid box-shadow issues or borders on canvas, we slightly modify its style before capture if needed
+  // Alternatively just capture as is.
+  html2canvas(target, { backgroundColor: '#0B0E14', scale: 2 }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'Sampiyonluk-Tahminim.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    btn.innerHTML = originalText;
+  }).catch(err => {
+    console.error('Screenshot error:', err);
+    alert('Tahmin indirilirken bir hata oluştu.');
+    btn.innerHTML = originalText;
+  });
+}
