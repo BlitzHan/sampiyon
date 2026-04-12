@@ -67,10 +67,10 @@ const state = {
 
 // ===== PUAN DURUMU VERİLERİ =====
 const standingsBase = [
-  { key: 'GS', name: '🟡🔴 Galatasaray', played: 29, won: 21, drawn: 5, lost: 3, gf: 67, ga: 22, pts: 68, dynamic: true },
-  { key: 'FB', name: '💛💙 Fenerbahçe', played: 29, won: 19, drawn: 9, lost: 1, gf: 66, ga: 28, pts: 66, dynamic: true },
-  { key: 'TS', name: '🔵🟤 Trabzonspor', played: 29, won: 19, drawn: 7, lost: 3, gf: 54, ga: 29, pts: 64, dynamic: true },
-  { key: 'BJK', name: '⬛⬜ Beşiktaş', played: 29, won: 16, drawn: 7, lost: 6, gf: 54, ga: 35, pts: 55, dynamic: true },
+  { key: 'GS', name: 'Galatasaray', played: 29, won: 21, drawn: 5, lost: 3, gf: 67, ga: 22, pts: 68, dynamic: true },
+  { key: 'FB', name: 'Fenerbahçe', played: 29, won: 19, drawn: 9, lost: 1, gf: 66, ga: 28, pts: 66, dynamic: true },
+  { key: 'TS', name: 'Trabzonspor', played: 29, won: 19, drawn: 7, lost: 3, gf: 54, ga: 29, pts: 64, dynamic: true },
+  { key: 'BJK', name: 'Beşiktaş', played: 29, won: 16, drawn: 7, lost: 6, gf: 54, ga: 35, pts: 55, dynamic: true },
 ];
 
 function renderStandings() {
@@ -115,7 +115,12 @@ function renderStandings() {
     const rowClass = rowClassMap[r.key] || '';
     return `<tr class="${rowClass}">
       <td>${i + 1}</td>
-      <td class="team-col">${r.name}</td>
+      <td class="team-col">
+        <div class="team-name-cell">
+          <div class="team-dot dot-${r.key.toLowerCase()}"></div>
+          <span style="${i===0 ? 'color: var(--brand-gs);' : ''}">${r.name}</span>
+        </div>
+      </td>
       <td>${r.played}</td>
       <td>${r.won}</td>
       <td>${r.drawn}</td>
@@ -123,10 +128,36 @@ function renderStandings() {
       <td>${r.gf}</td>
       <td>${r.ga}</td>
       <td class="av-col">${r.av >= 0 ? '+' : ''}${r.av}</td>
-      <td class="pts-col"><strong>${r.pts}</strong></td>
+      <td class="pts-col" style="${i===0 ? 'color: var(--brand-gs);' : ''}"><strong>${r.pts}</strong></td>
     </tr>`;
   }).join('');
+
+  // Mini Leaderboard Güncellemesi (Sadece Top 2)
+  const top2 = rows.slice(0, 2);
+  const miniBoard = document.getElementById('mini-leaderboard');
+  if (miniBoard) {
+    miniBoard.innerHTML = top2.map((t, index) => `
+      <div class="mini-team ${index === 0 ? 'leader' : ''}">
+        <div class="team-dot dot-${t.key.toLowerCase()}"></div>
+        ${t.name} <span class="mini-pts">${t.pts} P</span>
+      </div>
+    `).join('');
+  }
 }
+
+// Scroll Event for Mini Leaderboard
+window.addEventListener('scroll', () => {
+  const standingsTable = document.querySelector('.standings-section');
+  const miniBoard = document.getElementById('mini-leaderboard');
+  if (!standingsTable || !miniBoard) return;
+  
+  const rect = standingsTable.getBoundingClientRect();
+  if (rect.top < 0) { // When table strictly hits top edge
+    miniBoard.classList.add('visible');
+  } else {
+    miniBoard.classList.remove('visible');
+  }
+});
 
 // ===== RENDER =====
 function renderMatches(team, containerId) {
@@ -135,35 +166,38 @@ function renderMatches(team, containerId) {
 
   state[team].matches.forEach((match, index) => {
     const row = document.createElement('div');
-    row.className = 'match-row';
-    if (match.outcome === 'W') row.classList.add('row-win');
-    else if (match.outcome === 'D') row.classList.add('row-draw');
-    else if (match.outcome === 'L') row.classList.add('row-loss');
+    const outcomeLower = match.outcome ? match.outcome.toLowerCase() : '';
+    row.className = `match-card ${match.outcome ? 'state-' + outcomeLower : ''}`;
 
     const venueTag = match.home
-      ? '<span class="venue home">İÇ</span>'
-      : '<span class="venue away">DIŞ</span>';
+      ? '<span class="venue-tag home">EV SAHİBİ</span>'
+      : '<span class="venue-tag away">DEPLASMAN</span>';
 
     row.innerHTML = `
-      <div class="match-info">
-        <span class="match-week">${match.week}</span>
-        <span class="match-opponent">${venueTag} ${match.opponent}</span>
+      <div class="match-header-row">
+        <span>${match.week}</span>
+        ${venueTag}
       </div>
-      <div class="match-controls">
+      <div class="match-main">
+        <span class="opponent-name">${match.opponent}</span>
         <div class="score-inputs">
-          <input type="number" min="0" max="20" class="score-input" placeholder="-" value="${match.goalsFor}" onchange="setScore('${team}', ${index}, 'gf', this.value)" title="Attığı Gol">
-          <span class="score-dash">-</span>
-          <input type="number" min="0" max="20" class="score-input" placeholder="-" value="${match.goalsAgainst}" onchange="setScore('${team}', ${index}, 'ga', this.value)" title="Yediği Gol">
+          <input type="number" min="0" max="20" class="score-box" value="${match.goalsFor}" onchange="setScore('${team}', ${index}, 'gf', this.value)">
+          <span class="score-sep">-</span>
+          <input type="number" min="0" max="20" class="score-box" value="${match.goalsAgainst}" onchange="setScore('${team}', ${index}, 'ga', this.value)">
         </div>
-        <div class="match-actions">
-          <button class="btn-outcome btn-w ${match.outcome === 'W' ? 'active' : ''}" onclick="setOutcome('${team}', ${index}, 'W')" title="Yener">G</button>
-          <button class="btn-outcome btn-d ${match.outcome === 'D' ? 'active' : ''}" onclick="setOutcome('${team}', ${index}, 'D')" title="Berabere">B</button>
-          <button class="btn-outcome btn-l ${match.outcome === 'L' ? 'active' : ''}" onclick="setOutcome('${team}', ${index}, 'L')" title="Yenilir">M</button>
-        </div>
+      </div>
+      <div class="prediction-controls">
+        <button class="pred-btn w ${match.outcome === 'W' ? 'active' : ''}" onclick="setOutcome('${team}', ${index}, 'W')">KAZANIR</button>
+        <button class="pred-btn d ${match.outcome === 'D' ? 'active' : ''}" onclick="setOutcome('${team}', ${index}, 'D')">BERABERE</button>
+        <button class="pred-btn l ${match.outcome === 'L' ? 'active' : ''}" onclick="setOutcome('${team}', ${index}, 'L')">KAYBEDER</button>
       </div>
     `;
     container.appendChild(row);
   });
+}
+
+function saveState() {
+  localStorage.setItem('sampiyonSimulatorState', JSON.stringify(state));
 }
 
 function updatePoints() {
@@ -207,6 +241,7 @@ function updatePoints() {
 
   // Update standings table
   renderStandings();
+  saveState();
 }
 
 // ===== BAĞLI MAÇLAR (Derbi senkronizasyonu) =====
@@ -312,6 +347,33 @@ window.setScore = function(team, index, type, value) {
 });
 
 // Init
+const savedState = localStorage.getItem('sampiyonSimulatorState');
+if (savedState) {
+  try {
+    const parsed = JSON.parse(savedState);
+    ['GS', 'FB', 'TS', 'BJK'].forEach(team => {
+      if (parsed[team]) {
+        state[team].basePoints = parsed[team].basePoints;
+        state[team].baseGF = parsed[team].baseGF;
+        state[team].baseGA = parsed[team].baseGA;
+        document.getElementById(`base-${team.toLowerCase()}`).value = state[team].basePoints;
+        document.getElementById(`basegf-${team.toLowerCase()}`).value = state[team].baseGF;
+        document.getElementById(`basega-${team.toLowerCase()}`).value = state[team].baseGA;
+        
+        parsed[team].matches.forEach((m, idx) => {
+          if (state[team].matches[idx]) {
+            state[team].matches[idx].outcome = m.outcome;
+            state[team].matches[idx].goalsFor = m.goalsFor;
+            state[team].matches[idx].goalsAgainst = m.goalsAgainst;
+          }
+        });
+      }
+    });
+  } catch (e) {
+    console.error('State geri yüklenemedi:', e);
+  }
+}
+
 renderStandings();
 ['GS', 'FB', 'TS', 'BJK'].forEach(t => renderMatches(t, `fixtures-${t.toLowerCase()}`));
 updatePoints();

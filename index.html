@@ -4,81 +4,79 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Şampiyonluk Hesaplama - Süper Lig 2025/26</title>
-  <meta name="description" content="Galatasaray ve Fenerbahçe'nin kalan maçlarını tahmin edin, puan ve averaj hesaplayın.">
+  <meta name="description" content="Süper Lig şampiyonluk yarışını canlı olarak simüle edin, maç sonuçlarını ve skorlarını tahmin edin.">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="style.css?v=3">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Sabit Liderlik Barı -->
+  <div id="mini-leaderboard" class="mini-leaderboard">
+    <!-- JS ile doldurulacak -->
+  </div>
+
   <div class="app-container">
     <header class="header">
-      <h1>⚽ Süper Lig Şampiyonluk Hesaplama</h1>
-      <p class="subtitle">Kalan maçların sonuçlarını ve skorlarını girin — puan ve averajı canlı takip edin</p>
-      <p class="date-info">📅 12 Nisan 2026 · 29. Hafta tamamlandı · 5 maç kaldı</p>
+      <h1>Süper Lig Şampiyonluk Simülasyonu</h1>
+      <p>Kalan maçların sonuçlarını ve skorlarını tahmin ederek puan tablosunu canlı takip edin</p>
+      <div class="date-badge">Güncel Veri: 12 Nisan 2026</div>
     </header>
 
-    <!-- ===== PUAN DURUMU TABLOSU ===== -->
     <div class="standings-section">
-      <h2 class="standings-title">📊 Puan Durumu</h2>
-      <table class="standings-table" id="standings-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th class="team-col">Takım</th>
-            <th>O</th>
-            <th>G</th>
-            <th>B</th>
-            <th>M</th>
-            <th>AG</th>
-            <th>YG</th>
-            <th>AV</th>
-            <th>P</th>
-          </tr>
-        </thead>
-        <tbody id="standings-body">
-          <!-- Rows will be rendered by JS -->
-        </tbody>
-      </table>
+      <div class="standings-title">Canlı Puan Durumu</div>
+      <div class="table-responsive">
+        <table class="standings-table" id="standings-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th class="team-col">Takım</th>
+              <th>O</th>
+              <th>G</th>
+              <th>B</th>
+              <th>M</th>
+              <th>AG</th>
+              <th>YG</th>
+              <th>AV</th>
+              <th>P</th>
+            </tr>
+          </thead>
+          <tbody id="standings-body">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="teams-container">
+      
       <!-- ===== GALATASARAY ===== -->
       <div class="team-card" id="card-gs">
-        <div class="team-header gs-header">
-          <h2>🟡🔴 Galatasaray</h2>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <span class="stat-label">Mevcut Puan</span>
-              <input type="number" id="base-gs" value="68" class="stat-input">
+        <div class="team-header theme-gs">
+          <div class="team-title">
+            <div class="team-dot dot-gs"></div>
+            Galatasaray
+          </div>
+          <div class="base-stats">
+            <div class="base-stat-group">
+              <label>Başlangıç Puanı</label>
+              <input type="number" id="base-gs" value="68">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">AG</span>
-              <input type="number" id="basegf-gs" value="67" class="stat-input small">
+            <div class="base-stat-group">
+              <label>AG</label>
+              <input type="number" id="basegf-gs" value="67">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">YG</span>
-              <input type="number" id="basega-gs" value="22" class="stat-input small">
+            <div class="base-stat-group">
+              <label>YG</label>
+              <input type="number" id="basega-gs" value="22">
             </div>
           </div>
-          <div class="totals-bar">
-            <div class="total-item">
-              <span class="total-label">Toplam Puan</span>
-              <span class="total-value" id="total-gs">68 P</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">AG</span>
-              <span class="total-value small" id="gf-gs">67</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">YG</span>
-              <span class="total-value small" id="ga-gs">22</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">Averaj</span>
-              <span class="total-value averaj" id="averaj-gs">+45</span>
-            </div>
+          <div class="summary-bar">
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-gs">68</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-gs">67</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-gs">22</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-gs">+45</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-gs"></div>
@@ -86,39 +84,30 @@
 
       <!-- ===== FENERBAHÇE ===== -->
       <div class="team-card" id="card-fb">
-        <div class="team-header fb-header">
-          <h2>💛💙 Fenerbahçe</h2>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <span class="stat-label">Mevcut Puan</span>
-              <input type="number" id="base-fb" value="66" class="stat-input">
+        <div class="team-header theme-fb">
+          <div class="team-title">
+            <div class="team-dot dot-fb"></div>
+            Fenerbahçe
+          </div>
+          <div class="base-stats">
+            <div class="base-stat-group">
+              <label>Başlangıç Puanı</label>
+              <input type="number" id="base-fb" value="66">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">AG</span>
-              <input type="number" id="basegf-fb" value="66" class="stat-input small">
+            <div class="base-stat-group">
+              <label>AG</label>
+              <input type="number" id="basegf-fb" value="66">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">YG</span>
-              <input type="number" id="basega-fb" value="28" class="stat-input small">
+            <div class="base-stat-group">
+              <label>YG</label>
+              <input type="number" id="basega-fb" value="28">
             </div>
           </div>
-          <div class="totals-bar">
-            <div class="total-item">
-              <span class="total-label">Toplam Puan</span>
-              <span class="total-value" id="total-fb">66 P</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">AG</span>
-              <span class="total-value small" id="gf-fb">66</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">YG</span>
-              <span class="total-value small" id="ga-fb">28</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">Averaj</span>
-              <span class="total-value averaj" id="averaj-fb">+38</span>
-            </div>
+          <div class="summary-bar">
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-fb">66</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-fb">66</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-fb">28</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-fb">+38</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-fb"></div>
@@ -126,39 +115,30 @@
 
       <!-- ===== TRABZONSPOR ===== -->
       <div class="team-card" id="card-ts">
-        <div class="team-header ts-header">
-          <h2>🔵🟤 Trabzonspor</h2>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <span class="stat-label">Mevcut Puan</span>
-              <input type="number" id="base-ts" value="64" class="stat-input">
+        <div class="team-header theme-ts">
+          <div class="team-title">
+            <div class="team-dot dot-ts"></div>
+            Trabzonspor
+          </div>
+          <div class="base-stats">
+            <div class="base-stat-group">
+              <label>Başlangıç Puanı</label>
+              <input type="number" id="base-ts" value="64">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">AG</span>
-              <input type="number" id="basegf-ts" value="54" class="stat-input small">
+            <div class="base-stat-group">
+              <label>AG</label>
+              <input type="number" id="basegf-ts" value="54">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">YG</span>
-              <input type="number" id="basega-ts" value="29" class="stat-input small">
+            <div class="base-stat-group">
+              <label>YG</label>
+              <input type="number" id="basega-ts" value="29">
             </div>
           </div>
-          <div class="totals-bar">
-            <div class="total-item">
-              <span class="total-label">Toplam Puan</span>
-              <span class="total-value" id="total-ts">64 P</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">AG</span>
-              <span class="total-value small" id="gf-ts">54</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">YG</span>
-              <span class="total-value small" id="ga-ts">29</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">Averaj</span>
-              <span class="total-value averaj" id="averaj-ts">+25</span>
-            </div>
+          <div class="summary-bar">
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-ts">64</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-ts">54</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-ts">29</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-ts">+25</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-ts"></div>
@@ -166,50 +146,42 @@
 
       <!-- ===== BEŞİKTAŞ ===== -->
       <div class="team-card" id="card-bjk">
-        <div class="team-header bjk-header">
-          <h2>⬛⬜ Beşiktaş</h2>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <span class="stat-label">Mevcut Puan</span>
-              <input type="number" id="base-bjk" value="55" class="stat-input">
+        <div class="team-header theme-bjk">
+          <div class="team-title">
+            <div class="team-dot dot-bjk"></div>
+            Beşiktaş
+          </div>
+          <div class="base-stats">
+            <div class="base-stat-group">
+              <label>Başlangıç Puanı</label>
+              <input type="number" id="base-bjk" value="55">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">AG</span>
-              <input type="number" id="basegf-bjk" value="54" class="stat-input small">
+            <div class="base-stat-group">
+              <label>AG</label>
+              <input type="number" id="basegf-bjk" value="54">
             </div>
-            <div class="stat-box">
-              <span class="stat-label">YG</span>
-              <input type="number" id="basega-bjk" value="35" class="stat-input small">
+            <div class="base-stat-group">
+              <label>YG</label>
+              <input type="number" id="basega-bjk" value="35">
             </div>
           </div>
-          <div class="totals-bar">
-            <div class="total-item">
-              <span class="total-label">Toplam Puan</span>
-              <span class="total-value" id="total-bjk">55 P</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">AG</span>
-              <span class="total-value small" id="gf-bjk">54</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">YG</span>
-              <span class="total-value small" id="ga-bjk">35</span>
-            </div>
-            <div class="total-item">
-              <span class="total-label">Averaj</span>
-              <span class="total-value averaj" id="averaj-bjk">+19</span>
-            </div>
+          <div class="summary-bar">
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-bjk">55</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-bjk">54</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-bjk">35</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-bjk">+19</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-bjk"></div>
       </div>
+
     </div>
 
     <footer class="footer">
-      <p>Veriler <a href="https://www.mackolik.com" target="_blank">Mackolik.com</a> kaynaklıdır · G = Galibiyet (+3) · B = Beraberlik (+1) · M = Mağlubiyet (0)</p>
+      <p>Gerçek fikstür ile hesaplanmaktadır. Veri Kaynağı: <a href="https://www.mackolik.com" target="_blank">Mackolik.com</a></p>
     </footer>
   </div>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
