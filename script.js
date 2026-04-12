@@ -66,6 +66,8 @@ const state = {
 };
 
 // ===== PUAN DURUMU VERİLERİ =====
+const TEAMS = ['GS', 'FB', 'TS', 'BJK'];
+
 const standingsBase = [
   { key: 'GS', name: 'Galatasaray', played: 29, won: 21, drawn: 5, lost: 3, gf: 67, ga: 22, pts: 68, dynamic: true },
   { key: 'FB', name: 'Fenerbahçe', played: 29, won: 19, drawn: 9, lost: 1, gf: 66, ga: 28, pts: 66, dynamic: true },
@@ -145,17 +147,25 @@ function renderStandings() {
   }
 }
 
-// Scroll Event for Mini Leaderboard
+// Scroll Event for Mini Leaderboard (Optimized)
+const elStandingsTable = document.querySelector('.standings-section');
+const elMiniBoard = document.getElementById('mini-leaderboard');
+let scrollTicking = false;
+
 window.addEventListener('scroll', () => {
-  const standingsTable = document.querySelector('.standings-section');
-  const miniBoard = document.getElementById('mini-leaderboard');
-  if (!standingsTable || !miniBoard) return;
-  
-  const rect = standingsTable.getBoundingClientRect();
-  if (rect.top < 0) { // When table strictly hits top edge
-    miniBoard.classList.add('visible');
-  } else {
-    miniBoard.classList.remove('visible');
+  if (!scrollTicking) {
+    window.requestAnimationFrame(() => {
+      if (elStandingsTable && elMiniBoard) {
+        const rect = elStandingsTable.getBoundingClientRect();
+        if (rect.top < 0) {
+          elMiniBoard.classList.add('visible');
+        } else {
+          elMiniBoard.classList.remove('visible');
+        }
+      }
+      scrollTicking = false;
+    });
+    scrollTicking = true;
   }
 });
 
@@ -196,12 +206,16 @@ function renderMatches(team, containerId) {
   });
 }
 
+let debounceTimer;
 function saveState() {
-  localStorage.setItem('sampiyonSimulatorState', JSON.stringify(state));
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    localStorage.setItem('sampiyonSimulatorState', JSON.stringify(state));
+  }, 300);
 }
 
 function updatePoints() {
-  ['GS', 'FB', 'TS', 'BJK'].forEach(team => {
+  TEAMS.forEach(team => {
     const t = state[team];
     const earnedPts = t.matches.reduce((s, m) => s + (m.outcome ? getPoints(m.outcome) : 0), 0);
     const totalPts = t.basePoints + earnedPts;
@@ -226,14 +240,13 @@ function updatePoints() {
   });
 
   // Leader highlight - en yüksek puanlı kartı vurgula
-  const teamKeys = ['GS', 'FB', 'TS', 'BJK'];
-  const totals = teamKeys.map(t => ({
+  const totals = TEAMS.map(t => ({
     key: t,
     pts: state[t].basePoints + state[t].matches.reduce((s, m) => s + (m.outcome ? getPoints(m.outcome) : 0), 0)
   }));
   const maxPts = Math.max(...totals.map(t => t.pts));
 
-  teamKeys.forEach(t => {
+  TEAMS.forEach(t => {
     const card = document.getElementById(`card-${t.toLowerCase()}`);
     card.classList.remove('leader');
     if (totals.find(x => x.key === t).pts === maxPts) card.classList.add('leader');
@@ -351,7 +364,7 @@ const savedState = localStorage.getItem('sampiyonSimulatorState');
 if (savedState) {
   try {
     const parsed = JSON.parse(savedState);
-    ['GS', 'FB', 'TS', 'BJK'].forEach(team => {
+    TEAMS.forEach(team => {
       if (parsed[team]) {
         state[team].basePoints = parsed[team].basePoints;
         state[team].baseGF = parsed[team].baseGF;
@@ -375,5 +388,5 @@ if (savedState) {
 }
 
 renderStandings();
-['GS', 'FB', 'TS', 'BJK'].forEach(t => renderMatches(t, `fixtures-${t.toLowerCase()}`));
+TEAMS.forEach(t => renderMatches(t, `fixtures-${t.toLowerCase()}`));
 updatePoints();
