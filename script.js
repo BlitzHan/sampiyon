@@ -114,12 +114,46 @@ function updatePoints() {
   else if (fbTotal > gsTotal) fbCard.classList.add('leader');
 }
 
+// ===== BAĞLI MAÇLAR (Derbi senkronizasyonu) =====
+// GS index 1 (vs Fenerbahçe) <-> FB index 1 (vs Galatasaray)
+const linkedMatches = [
+  { teamA: 'GS', indexA: 1, teamB: 'FB', indexB: 1 }
+];
+
+function getLinkedMatch(team, index) {
+  for (const link of linkedMatches) {
+    if (link.teamA === team && link.indexA === index) return { team: link.teamB, index: link.indexB };
+    if (link.teamB === team && link.indexB === index) return { team: link.teamA, index: link.indexA };
+  }
+  return null;
+}
+
+function flipOutcome(outcome) {
+  if (outcome === 'W') return 'L';
+  if (outcome === 'L') return 'W';
+  if (outcome === 'D') return 'D';
+  return null;
+}
+
 // ===== GLOBAL HANDLERS =====
 window.setOutcome = function(team, index, outcome) {
+  // Toggle off
   if (state[team].matches[index].outcome === outcome) {
     state[team].matches[index].outcome = null;
+    // Bağlı maçı da temizle
+    const linked = getLinkedMatch(team, index);
+    if (linked) {
+      state[linked.team].matches[linked.index].outcome = null;
+      renderMatches(linked.team, `fixtures-${linked.team.toLowerCase()}`);
+    }
   } else {
     state[team].matches[index].outcome = outcome;
+    // Bağlı maça ters sonucu yaz
+    const linked = getLinkedMatch(team, index);
+    if (linked) {
+      state[linked.team].matches[linked.index].outcome = flipOutcome(outcome);
+      renderMatches(linked.team, `fixtures-${linked.team.toLowerCase()}`);
+    }
   }
   renderMatches(team, `fixtures-${team.toLowerCase()}`);
   updatePoints();
@@ -131,6 +165,18 @@ window.setScore = function(team, index, type, value) {
   } else {
     state[team].matches[index].goalsAgainst = value;
   }
+
+  // Bağlı maçın skorunu senkronize et (AG <-> YG)
+  const linked = getLinkedMatch(team, index);
+  if (linked) {
+    if (type === 'gf') {
+      state[linked.team].matches[linked.index].goalsAgainst = value;
+    } else {
+      state[linked.team].matches[linked.index].goalsFor = value;
+    }
+    renderMatches(linked.team, `fixtures-${linked.team.toLowerCase()}`);
+  }
+
   updatePoints();
 };
 
