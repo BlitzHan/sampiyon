@@ -135,23 +135,41 @@ function flipOutcome(outcome) {
   return null;
 }
 
+// ===== VARSAYILAN SKORLAR =====
+function getDefaultScores(outcome) {
+  if (outcome === 'W') return { gf: '1', ga: '0' };
+  if (outcome === 'L') return { gf: '0', ga: '1' };
+  if (outcome === 'D') return { gf: '0', ga: '0' };
+  return { gf: '', ga: '' };
+}
+
 // ===== GLOBAL HANDLERS =====
 window.setOutcome = function(team, index, outcome) {
+  const match = state[team].matches[index];
+  const linked = getLinkedMatch(team, index);
+
   // Toggle off
-  if (state[team].matches[index].outcome === outcome) {
-    state[team].matches[index].outcome = null;
-    // Bağlı maçı da temizle
-    const linked = getLinkedMatch(team, index);
+  if (match.outcome === outcome) {
+    match.outcome = null;
+    match.goalsFor = '';
+    match.goalsAgainst = '';
     if (linked) {
-      state[linked.team].matches[linked.index].outcome = null;
+      const lm = state[linked.team].matches[linked.index];
+      lm.outcome = null;
+      lm.goalsFor = '';
+      lm.goalsAgainst = '';
       renderMatches(linked.team, `fixtures-${linked.team.toLowerCase()}`);
     }
   } else {
-    state[team].matches[index].outcome = outcome;
-    // Bağlı maça ters sonucu yaz
-    const linked = getLinkedMatch(team, index);
+    match.outcome = outcome;
+    const scores = getDefaultScores(outcome);
+    match.goalsFor = scores.gf;
+    match.goalsAgainst = scores.ga;
     if (linked) {
-      state[linked.team].matches[linked.index].outcome = flipOutcome(outcome);
+      const lm = state[linked.team].matches[linked.index];
+      lm.outcome = flipOutcome(outcome);
+      lm.goalsFor = scores.ga;   // Rakibin AG = bizim YG
+      lm.goalsAgainst = scores.gf; // Rakibin YG = bizim AG
       renderMatches(linked.team, `fixtures-${linked.team.toLowerCase()}`);
     }
   }
