@@ -44,6 +44,68 @@ body {
 .subtitle { color: var(--text-secondary); font-size: 1rem; }
 .date-info { color: #64748b; font-size: 0.85rem; margin-top: 0.3rem; }
 
+/* === STANDINGS TABLE === */
+.standings-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+.standings-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.standings-table th {
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.standings-table th.team-col,
+.standings-table td.team-col {
+  text-align: left;
+  padding-left: 0.5rem;
+}
+
+.standings-table td {
+  padding: 0.6rem 0.4rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.standings-table tr:hover { background: rgba(255,255,255,0.03); }
+
+.standings-table tr.row-gs {
+  background: rgba(160,16,38,0.12);
+}
+.standings-table tr.row-gs:hover { background: rgba(160,16,38,0.2); }
+
+.standings-table tr.row-fb {
+  background: rgba(0,35,91,0.15);
+}
+.standings-table tr.row-fb:hover { background: rgba(0,35,91,0.25); }
+
+.standings-table .av-col { color: var(--win-color); font-weight: 700; }
+.standings-table .pts-col { font-size: 1rem; color: #facc15; }
+
 /* === TEAMS GRID === */
 .teams-container {
   display: grid;

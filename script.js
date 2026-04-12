@@ -3,7 +3,7 @@ const gsMatches = [
   { id: 'gs-1', week: '30. Hafta', opponent: 'Gençlerbirliği', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'gs-2', week: '31. Hafta', opponent: 'Fenerbahçe', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'gs-3', week: '32. Hafta', opponent: 'Samsunspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
-  { id: 'gs-4', week: '33. Hafta', opponent: 'Beşiktaş', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'gs-4', week: '33. Hafta', opponent: 'Antalyaspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'gs-5', week: '34. Hafta', opponent: 'Kasımpaşa', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
 ];
 
@@ -11,7 +11,7 @@ const fbMatches = [
   { id: 'fb-1', week: '30. Hafta', opponent: 'Ç. Rizespor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-2', week: '31. Hafta', opponent: 'Galatasaray', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-3', week: '32. Hafta', opponent: 'Başakşehir', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
-  { id: 'fb-4', week: '33. Hafta', opponent: 'Bodrumspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
+  { id: 'fb-4', week: '33. Hafta', opponent: 'Konyaspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-5', week: '34. Hafta', opponent: 'Eyüpspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
 ];
 
@@ -36,6 +36,70 @@ const state = {
     matches: fbMatches.map(m => ({...m}))
   }
 };
+
+// ===== PUAN DURUMU VERİLERİ =====
+const standingsBase = [
+  { key: 'GS', name: '🟡🔴 Galatasaray', played: 29, won: 21, drawn: 5, lost: 3, gf: 67, ga: 22, pts: 68, dynamic: true },
+  { key: 'FB', name: '💛💙 Fenerbahçe', played: 29, won: 19, drawn: 9, lost: 1, gf: 66, ga: 28, pts: 66, dynamic: true },
+  { key: 'TS', name: '🔵🟤 Trabzonspor', played: 29, won: 19, drawn: 7, lost: 3, gf: 54, ga: 29, pts: 64, dynamic: false },
+  { key: 'BJK', name: '⬛⬜ Beşiktaş', played: 29, won: 16, drawn: 7, lost: 6, gf: 54, ga: 35, pts: 55, dynamic: false },
+];
+
+function renderStandings() {
+  const rows = standingsBase.map(team => {
+    let p = team.pts, g = team.won, b = team.drawn, m = team.lost, o = team.played;
+    let gf = team.gf, ga = team.ga;
+
+    if (team.dynamic && state[team.key]) {
+      const t = state[team.key];
+      const earnedPts = t.matches.reduce((s, mt) => s + (mt.outcome ? getPoints(mt.outcome) : 0), 0);
+      let extraGF = 0, extraGA = 0, wins = 0, draws = 0, losses = 0, played = 0;
+      t.matches.forEach(mt => {
+        if (mt.outcome) {
+          played++;
+          if (mt.outcome === 'W') wins++;
+          else if (mt.outcome === 'D') draws++;
+          else losses++;
+        }
+        const gfv = parseInt(mt.goalsFor);
+        const gav = parseInt(mt.goalsAgainst);
+        if (!isNaN(gfv)) extraGF += gfv;
+        if (!isNaN(gav)) extraGA += gav;
+      });
+      p = t.basePoints + earnedPts;
+      gf = t.baseGF + extraGF;
+      ga = t.baseGA + extraGA;
+      g = team.won + wins;
+      b = team.drawn + draws;
+      m = team.lost + losses;
+      o = team.played + played;
+    }
+
+    return { ...team, pts: p, won: g, drawn: b, lost: m, played: o, gf, ga, av: gf - ga };
+  });
+
+  // Sort by pts desc, then av desc
+  rows.sort((a, b) => b.pts - a.pts || b.av - a.av);
+
+  const tbody = document.getElementById('standings-body');
+  tbody.innerHTML = rows.map((r, i) => {
+    const isGS = r.key === 'GS';
+    const isFB = r.key === 'FB';
+    const rowClass = isGS ? 'row-gs' : isFB ? 'row-fb' : '';
+    return `<tr class="${rowClass}">
+      <td>${i + 1}</td>
+      <td class="team-col">${r.name}</td>
+      <td>${r.played}</td>
+      <td>${r.won}</td>
+      <td>${r.drawn}</td>
+      <td>${r.lost}</td>
+      <td>${r.gf}</td>
+      <td>${r.ga}</td>
+      <td class="av-col">${r.av >= 0 ? '+' : ''}${r.av}</td>
+      <td class="pts-col"><strong>${r.pts}</strong></td>
+    </tr>`;
+  }).join('');
+}
 
 // ===== RENDER =====
 function renderMatches(team, containerId) {
@@ -112,6 +176,9 @@ function updatePoints() {
 
   if (gsTotal > fbTotal) gsCard.classList.add('leader');
   else if (fbTotal > gsTotal) fbCard.classList.add('leader');
+
+  // Update standings table
+  renderStandings();
 }
 
 // ===== BAĞLI MAÇLAR (Derbi senkronizasyonu) =====
@@ -216,6 +283,7 @@ window.setScore = function(team, index, type, value) {
 });
 
 // Init
+renderStandings();
 renderMatches('GS', 'fixtures-gs');
 renderMatches('FB', 'fixtures-fb');
 updatePoints();
