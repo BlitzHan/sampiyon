@@ -8,7 +8,6 @@ const gsMatches = [
 ];
 
 const fbMatches = [
-  { id: 'fb-1', week: '30. Hafta', opponent: 'Ç. Rizespor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-2', week: '31. Hafta', opponent: 'Galatasaray', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-3', week: '32. Hafta', opponent: 'Başakşehir', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-4', week: '33. Hafta', opponent: 'Konyaspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
@@ -46,9 +45,9 @@ const state = {
     matches: gsMatches.map(m => ({...m}))
   },
   FB: {
-    basePoints: 66,
-    baseGF: 66,
-    baseGA: 28,
+    basePoints: 67,
+    baseGF: 68,
+    baseGA: 30,
     matches: fbMatches.map(m => ({...m}))
   },
   TS: {
@@ -70,7 +69,7 @@ const TEAMS = ['GS', 'FB', 'TS', 'BJK'];
 
 const standingsBase = [
   { key: 'GS', name: 'Galatasaray', played: 29, won: 21, drawn: 5, lost: 3, gf: 67, ga: 22, pts: 68, dynamic: true },
-  { key: 'FB', name: 'Fenerbahçe', played: 29, won: 19, drawn: 9, lost: 1, gf: 66, ga: 28, pts: 66, dynamic: true },
+  { key: 'FB', name: 'Fenerbahçe', played: 30, won: 19, drawn: 10, lost: 1, gf: 68, ga: 30, pts: 67, dynamic: true },
   { key: 'TS', name: 'Trabzonspor', played: 29, won: 19, drawn: 7, lost: 3, gf: 54, ga: 29, pts: 64, dynamic: true },
   { key: 'BJK', name: 'Beşiktaş', played: 29, won: 16, drawn: 7, lost: 6, gf: 54, ga: 35, pts: 55, dynamic: true },
 ];
@@ -258,9 +257,9 @@ function updatePoints() {
 }
 
 // ===== BAĞLI MAÇLAR (Derbi senkronizasyonu) =====
-// GS index 1 (vs Fenerbahçe) <-> FB index 1 (vs Galatasaray)
+// GS index 1 (vs Fenerbahçe) <-> FB index 0 (vs Galatasaray)
 const linkedMatches = [
-  { teamA: 'GS', indexA: 1, teamB: 'FB', indexB: 1 },  // 31. Hafta GS-FB
+  { teamA: 'GS', indexA: 1, teamB: 'FB', indexB: 0 },  // 31. Hafta GS-FB
   { teamA: 'TS', indexA: 3, teamB: 'BJK', indexB: 3 }   // 33. Hafta TS-BJK
 ];
 
