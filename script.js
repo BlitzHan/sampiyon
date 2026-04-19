@@ -39,25 +39,25 @@ const state = {
     basePoints: 71,
     baseGF: 69,
     baseGA: 23,
-    matches: gsMatches.map(m => ({...m}))
+    matches: gsMatches.map(m => ({ ...m }))
   },
   FB: {
     basePoints: 67,
     baseGF: 68,
     baseGA: 30,
-    matches: fbMatches.map(m => ({...m}))
+    matches: fbMatches.map(m => ({ ...m }))
   },
   TS: {
     basePoints: 65,
     baseGF: 55,
     baseGA: 30,
-    matches: tsMatches.map(m => ({...m}))
+    matches: tsMatches.map(m => ({ ...m }))
   },
   BJK: {
     basePoints: 55,
     baseGF: 55,
     baseGA: 37,
-    matches: bjkMatches.map(m => ({...m}))
+    matches: bjkMatches.map(m => ({ ...m }))
   }
 };
 
@@ -116,7 +116,7 @@ function renderStandings() {
       <td class="team-col">
         <div class="team-name-cell">
           <div class="team-dot dot-${r.key.toLowerCase()}"></div>
-          <span style="${i===0 ? 'color: var(--brand-gs);' : ''}">${r.name}</span>
+          <span style="${i === 0 ? 'color: var(--brand-gs);' : ''}">${r.name}</span>
         </div>
       </td>
       <td>${r.played}</td>
@@ -126,7 +126,7 @@ function renderStandings() {
       <td>${r.gf}</td>
       <td>${r.ga}</td>
       <td class="av-col">${r.av >= 0 ? '+' : ''}${r.av}</td>
-      <td class="pts-col" style="${i===0 ? 'color: var(--brand-gs);' : ''}"><strong>${r.pts}</strong></td>
+      <td class="pts-col" style="${i === 0 ? 'color: var(--brand-gs);' : ''}"><strong>${r.pts}</strong></td>
     </tr>`;
   }).join('');
 
@@ -206,7 +206,7 @@ let debounceTimer;
 function saveState() {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
-    localStorage.setItem('sampiyonSimulatorState', JSON.stringify(state));
+    localStorage.setItem('sampiyonSimulatorState_v5', JSON.stringify(state));
   }, 300);
 }
 
@@ -284,7 +284,7 @@ function getDefaultScores(outcome) {
 }
 
 // ===== GLOBAL HANDLERS =====
-window.setOutcome = function(team, index, outcome) {
+window.setOutcome = function (team, index, outcome) {
   const match = state[team].matches[index];
   const linked = getLinkedMatch(team, index);
 
@@ -317,7 +317,7 @@ window.setOutcome = function(team, index, outcome) {
   updatePoints();
 };
 
-window.setScore = function(team, index, type, value) {
+window.setScore = function (team, index, type, value) {
   if (type === 'gf') {
     state[team].matches[index].goalsFor = value;
   } else {
@@ -356,7 +356,7 @@ window.setScore = function(team, index, type, value) {
 });
 
 // Init
-const savedState = localStorage.getItem('sampiyonSimulatorState');
+const savedState = localStorage.getItem('sampiyonSimulatorState_v5');
 if (savedState) {
   try {
     const parsed = JSON.parse(savedState);
@@ -368,12 +368,13 @@ if (savedState) {
         document.getElementById(`base-${team.toLowerCase()}`).value = state[team].basePoints;
         document.getElementById(`basegf-${team.toLowerCase()}`).value = state[team].baseGF;
         document.getElementById(`basega-${team.toLowerCase()}`).value = state[team].baseGA;
-        
-        parsed[team].matches.forEach((m, idx) => {
-          if (state[team].matches[idx]) {
-            state[team].matches[idx].outcome = m.outcome;
-            state[team].matches[idx].goalsFor = m.goalsFor;
-            state[team].matches[idx].goalsAgainst = m.goalsAgainst;
+
+        parsed[team].matches.forEach((pm) => {
+          const m = state[team].matches.find(sm => sm.id === pm.id);
+          if (m) {
+            m.outcome = pm.outcome;
+            m.goalsFor = pm.goalsFor;
+            m.goalsAgainst = pm.goalsAgainst;
           }
         });
       }
@@ -389,7 +390,7 @@ updatePoints();
 
 // ===== ACTIONS =====
 function resetPredictions() {
-  if(confirm("Tüm tahminlerinizi silip orijinal puan durumuna dönmek istediğinize emin misiniz?")) {
+  if (confirm("Tüm tahminlerinizi silip orijinal puan durumuna dönmek istediğinize emin misiniz?")) {
     localStorage.removeItem('sampiyonSimulatorState');
     location.reload();
   }
@@ -399,12 +400,12 @@ function sharePrediction() {
   const btn = document.getElementById('btn-share');
   const originalText = btn.innerHTML;
   btn.innerHTML = '⏳ Hazırlanıyor...';
-  
+
   // Capture the entire app instead of just the standings, so match predictions are included.
   const target = document.querySelector('.app-container');
-  
-  html2canvas(target, { 
-    backgroundColor: '#0B0E14', 
+
+  html2canvas(target, {
+    backgroundColor: '#0B0E14',
     scale: 2,
     ignoreElements: (node) => {
       // Hide the buttons inside the screenshot so it looks cleaner
