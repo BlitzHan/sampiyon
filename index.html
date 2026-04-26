@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Şampiyonluk Hesaplama - Süper Lig 2025/26</title>
-  <meta name="description"
-    content="Süper Lig şampiyonluk yarışını canlı olarak simüle edin, maç sonuçlarını ve skorlarını tahmin edin.">
+  <meta name="description" content="Süper Lig şampiyonluk yarışını canlı olarak simüle edin, maç sonuçlarını ve skorlarını tahmin edin.">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-
 <body>
   <!-- Sabit Liderlik Barı -->
   <div id="mini-leaderboard" class="mini-leaderboard">
@@ -58,7 +55,7 @@
     </div>
 
     <div class="teams-container">
-
+      
       <!-- ===== GALATASARAY ===== -->
       <div class="team-card" id="card-gs">
         <div class="team-header theme-gs">
@@ -77,18 +74,14 @@
             </div>
             <div class="base-stat-group">
               <label>YG</label>
-              <input type="number" id="basega-gs" value="23">
+              <input type="number" id="basega-gs" value="22">
             </div>
           </div>
           <div class="summary-bar">
-            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts"
-                id="total-gs">71</span></div>
-            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val"
-                id="gf-gs">70</span></div>
-            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val"
-                id="ga-gs">23</span></div>
-            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av"
-                id="averaj-gs">+47</span></div>
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-gs">71</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-gs">70</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-gs">22</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-gs">+48</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-gs"></div>
@@ -116,14 +109,10 @@
             </div>
           </div>
           <div class="summary-bar">
-            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts"
-                id="total-fb">67</span></div>
-            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val"
-                id="gf-fb">68</span></div>
-            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val"
-                id="ga-fb">33</span></div>
-            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av"
-                id="averaj-fb">+35</span></div>
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-fb">67</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-fb">68</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-fb">33</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-fb">+35</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-fb"></div>
@@ -139,26 +128,22 @@
           <div class="base-stats">
             <div class="base-stat-group">
               <label>Başlangıç Puanı</label>
-              <input type="number" id="base-ts" value="65">
+              <input type="number" id="base-ts" value="64">
             </div>
             <div class="base-stat-group">
               <label>AG</label>
-              <input type="number" id="basegf-ts" value="55">
+              <input type="number" id="basegf-ts" value="54">
             </div>
             <div class="base-stat-group">
               <label>YG</label>
-              <input type="number" id="basega-ts" value="30">
+              <input type="number" id="basega-ts" value="29">
             </div>
           </div>
           <div class="summary-bar">
-            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts"
-                id="total-ts">65</span></div>
-            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val"
-                id="gf-ts">55</span></div>
-            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val"
-                id="ga-ts">30</span></div>
-            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av"
-                id="averaj-ts">+25</span></div>
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-ts">64</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-ts">54</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-ts">29</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-ts">+25</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-ts"></div>
@@ -178,22 +163,18 @@
             </div>
             <div class="base-stat-group">
               <label>AG</label>
-              <input type="number" id="basegf-bjk" value="55">
+              <input type="number" id="basegf-bjk" value="54">
             </div>
             <div class="base-stat-group">
               <label>YG</label>
-              <input type="number" id="basega-bjk" value="37">
+              <input type="number" id="basega-bjk" value="35">
             </div>
           </div>
           <div class="summary-bar">
-            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts"
-                id="total-bjk">55</span></div>
-            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val"
-                id="gf-bjk">55</span></div>
-            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val"
-                id="ga-bjk">37</span></div>
-            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av"
-                id="averaj-bjk">+18</span></div>
+            <div class="summary-item"><span class="summary-label">Toplam P</span><span class="summary-val val-pts" id="total-bjk">55</span></div>
+            <div class="summary-item"><span class="summary-label">Atılan</span><span class="summary-val" id="gf-bjk">54</span></div>
+            <div class="summary-item"><span class="summary-label">Yenen</span><span class="summary-val" id="ga-bjk">35</span></div>
+            <div class="summary-item"><span class="summary-label">Averaj</span><span class="summary-val val-av" id="averaj-bjk">+19</span></div>
           </div>
         </div>
         <div class="fixtures-list" id="fixtures-bjk"></div>
@@ -202,13 +183,11 @@
     </div>
 
     <footer class="footer">
-      <p>Gerçek fikstür ile hesaplanmaktadır. Veri Kaynağı: <a href="https://www.mackolik.com"
-          target="_blank">Mackolik.com</a></p>
+      <p>Gerçek fikstür ile hesaplanmaktadır. Veri Kaynağı: <a href="https://www.mackolik.com" target="_blank">Mackolik.com</a></p>
     </footer>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
-
 </html>
