@@ -390,7 +390,7 @@ updatePoints();
 // ===== ACTIONS =====
 function resetPredictions() {
   if (confirm("Tüm tahminlerinizi silip orijinal puan durumuna dönmek istediğinize emin misiniz?")) {
-    localStorage.removeItem('sampiyonSimulatorState');
+    localStorage.removeItem('sampiyonSimulatorState_v5');
     location.reload();
   }
 }
