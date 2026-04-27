@@ -14,14 +14,12 @@ const fbMatches = [
 ];
 
 const tsMatches = [
-  { id: 'ts-2', week: '31. Hafta', opponent: 'Konyaspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'ts-3', week: '32. Hafta', opponent: 'Göztepe', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'ts-4', week: '33. Hafta', opponent: 'Beşiktaş', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'ts-5', week: '34. Hafta', opponent: 'Gençlerbirliği', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
 ];
 
 const bjkMatches = [
-  { id: 'bjk-2', week: '31. Hafta', opponent: 'F. Karagümrük', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'bjk-3', week: '32. Hafta', opponent: 'Gaziantep FK', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'bjk-4', week: '33. Hafta', opponent: 'Trabzonspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'bjk-5', week: '34. Hafta', opponent: 'Ç. Rizespor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
@@ -49,12 +47,12 @@ const state = {
   },
   TS: {
     basePoints: 65,
-    baseGF: 55,
-    baseGA: 30,
+    baseGF: 56,
+    baseGA: 32,
     matches: tsMatches.map(m => ({ ...m }))
   },
   BJK: {
-    basePoints: 55,
+    basePoints: 56,
     baseGF: 55,
     baseGA: 37,
     matches: bjkMatches.map(m => ({ ...m }))
@@ -67,8 +65,8 @@ const TEAMS = ['GS', 'FB', 'TS', 'BJK'];
 const standingsBase = [
   { key: 'GS', name: 'Galatasaray', played: 30, won: 22, drawn: 5, lost: 3, gf: 69, ga: 23, pts: 71, dynamic: true },
   { key: 'FB', name: 'Fenerbahçe', played: 30, won: 19, drawn: 10, lost: 1, gf: 68, ga: 30, pts: 67, dynamic: true },
-  { key: 'TS', name: 'Trabzonspor', played: 30, won: 19, drawn: 8, lost: 3, gf: 55, ga: 30, pts: 65, dynamic: true },
-  { key: 'BJK', name: 'Beşiktaş', played: 30, won: 16, drawn: 7, lost: 7, gf: 55, ga: 37, pts: 55, dynamic: true },
+  { key: 'TS', name: 'Trabzonspor', played: 31, won: 19, drawn: 8, lost: 4, gf: 56, ga: 32, pts: 65, dynamic: true },
+  { key: 'BJK', name: 'Beşiktaş', played: 31, won: 16, drawn: 8, lost: 7, gf: 55, ga: 37, pts: 56, dynamic: true },
 ];
 
 function renderStandings() {
