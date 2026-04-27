@@ -1,13 +1,11 @@
-// ===== GERÇEK FİKSTÜR VERİLERİ (19 Nisan 2026 itibarıyla) =====
+// ===== GERÇEK FİKSTÜR VERİLERİ (27 Nisan 2026 itibarıyla) =====
 const gsMatches = [
-  { id: 'gs-2', week: '31. Hafta', opponent: 'Fenerbahçe', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'gs-3', week: '32. Hafta', opponent: 'Samsunspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'gs-4', week: '33. Hafta', opponent: 'Antalyaspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'gs-5', week: '34. Hafta', opponent: 'Kasımpaşa', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
 ];
 
 const fbMatches = [
-  { id: 'fb-2', week: '31. Hafta', opponent: 'Galatasaray', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-3', week: '32. Hafta', opponent: 'Başakşehir', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-4', week: '33. Hafta', opponent: 'Konyaspor', home: false, goalsFor: '', goalsAgainst: '', outcome: null },
   { id: 'fb-5', week: '34. Hafta', opponent: 'Eyüpspor', home: true, goalsFor: '', goalsAgainst: '', outcome: null },
@@ -34,16 +32,16 @@ function getPoints(outcome) {
 // State
 const state = {
   GS: {
-    basePoints: 71,
-    baseGF: 69,
-    baseGA: 23,
-    matches: gsMatches.map(m => ({ ...m }))
+    basePoints: 74,
+    baseGF: 74,
+    baseGA: 22,
+    matches: gsMatches.map(m => ({...m}))
   },
   FB: {
     basePoints: 67,
     baseGF: 68,
-    baseGA: 30,
-    matches: fbMatches.map(m => ({ ...m }))
+    baseGA: 33,
+    matches: fbMatches.map(m => ({...m}))
   },
   TS: {
     basePoints: 65,
@@ -63,8 +61,8 @@ const state = {
 const TEAMS = ['GS', 'FB', 'TS', 'BJK'];
 
 const standingsBase = [
-  { key: 'GS', name: 'Galatasaray', played: 30, won: 22, drawn: 5, lost: 3, gf: 69, ga: 23, pts: 71, dynamic: true },
-  { key: 'FB', name: 'Fenerbahçe', played: 30, won: 19, drawn: 10, lost: 1, gf: 68, ga: 30, pts: 67, dynamic: true },
+  { key: 'GS', name: 'Galatasaray', played: 31, won: 23, drawn: 5, lost: 3, gf: 74, ga: 22, pts: 74, dynamic: true },
+  { key: 'FB', name: 'Fenerbahçe', played: 31, won: 19, drawn: 10, lost: 2, gf: 68, ga: 33, pts: 67, dynamic: true },
   { key: 'TS', name: 'Trabzonspor', played: 31, won: 19, drawn: 8, lost: 4, gf: 56, ga: 32, pts: 65, dynamic: true },
   { key: 'BJK', name: 'Beşiktaş', played: 31, won: 16, drawn: 8, lost: 7, gf: 55, ga: 37, pts: 56, dynamic: true },
 ];
@@ -114,7 +112,7 @@ function renderStandings() {
       <td class="team-col">
         <div class="team-name-cell">
           <div class="team-dot dot-${r.key.toLowerCase()}"></div>
-          <span style="${i === 0 ? 'color: var(--brand-gs);' : ''}">${r.name}</span>
+          <span style="${i===0 ? 'color: var(--brand-gs);' : ''}">${r.name}</span>
         </div>
       </td>
       <td>${r.played}</td>
@@ -124,7 +122,7 @@ function renderStandings() {
       <td>${r.gf}</td>
       <td>${r.ga}</td>
       <td class="av-col">${r.av >= 0 ? '+' : ''}${r.av}</td>
-      <td class="pts-col" style="${i === 0 ? 'color: var(--brand-gs);' : ''}"><strong>${r.pts}</strong></td>
+      <td class="pts-col" style="${i===0 ? 'color: var(--brand-gs);' : ''}"><strong>${r.pts}</strong></td>
     </tr>`;
   }).join('');
 
@@ -204,7 +202,7 @@ let debounceTimer;
 function saveState() {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
-    localStorage.setItem('sampiyonSimulatorState_v5', JSON.stringify(state));
+    localStorage.setItem('sampiyonSimulatorState_v8', JSON.stringify(state));
   }, 300);
 }
 
@@ -252,10 +250,11 @@ function updatePoints() {
 }
 
 // ===== BAĞLI MAÇLAR (Derbi senkronizasyonu) =====
-// GS index 1 (vs Fenerbahçe) <-> FB index 0 (vs Galatasaray)
+// GS vs FB maçı kaldırıldı.
+// TS matches: 0: Göztepe, 1: Beşiktaş, 2: Gençlerbirliği
+// BJK matches: 0: Gaziantep, 1: Trabzonspor, 2: Rizespor
 const linkedMatches = [
-  { teamA: 'GS', indexA: 0, teamB: 'FB', indexB: 0 },  // 31. Hafta GS-FB
-  { teamA: 'TS', indexA: 2, teamB: 'BJK', indexB: 2 }   // 33. Hafta TS-BJK
+  { teamA: 'TS', indexA: 1, teamB: 'BJK', indexB: 1 }   // 33. Hafta TS-BJK
 ];
 
 function getLinkedMatch(team, index) {
@@ -282,7 +281,7 @@ function getDefaultScores(outcome) {
 }
 
 // ===== GLOBAL HANDLERS =====
-window.setOutcome = function (team, index, outcome) {
+window.setOutcome = function(team, index, outcome) {
   const match = state[team].matches[index];
   const linked = getLinkedMatch(team, index);
 
@@ -315,7 +314,7 @@ window.setOutcome = function (team, index, outcome) {
   updatePoints();
 };
 
-window.setScore = function (team, index, type, value) {
+window.setScore = function(team, index, type, value) {
   if (type === 'gf') {
     state[team].matches[index].goalsFor = value;
   } else {
@@ -354,7 +353,7 @@ window.setScore = function (team, index, type, value) {
 });
 
 // Init
-const savedState = localStorage.getItem('sampiyonSimulatorState_v5');
+const savedState = localStorage.getItem('sampiyonSimulatorState_v8');
 if (savedState) {
   try {
     const parsed = JSON.parse(savedState);
@@ -366,13 +365,12 @@ if (savedState) {
         document.getElementById(`base-${team.toLowerCase()}`).value = state[team].basePoints;
         document.getElementById(`basegf-${team.toLowerCase()}`).value = state[team].baseGF;
         document.getElementById(`basega-${team.toLowerCase()}`).value = state[team].baseGA;
-
-        parsed[team].matches.forEach((pm) => {
-          const m = state[team].matches.find(sm => sm.id === pm.id);
-          if (m) {
-            m.outcome = pm.outcome;
-            m.goalsFor = pm.goalsFor;
-            m.goalsAgainst = pm.goalsAgainst;
+        
+        parsed[team].matches.forEach((m, idx) => {
+          if (state[team].matches[idx]) {
+            state[team].matches[idx].outcome = m.outcome;
+            state[team].matches[idx].goalsFor = m.goalsFor;
+            state[team].matches[idx].goalsAgainst = m.goalsAgainst;
           }
         });
       }
@@ -388,8 +386,8 @@ updatePoints();
 
 // ===== ACTIONS =====
 function resetPredictions() {
-  if (confirm("Tüm tahminlerinizi silip orijinal puan durumuna dönmek istediğinize emin misiniz?")) {
-    localStorage.removeItem('sampiyonSimulatorState');
+  if(confirm("Tüm tahminlerinizi silip orijinal puan durumuna dönmek istediğinize emin misiniz?")) {
+    localStorage.removeItem('sampiyonSimulatorState_v8');
     location.reload();
   }
 }
@@ -398,12 +396,12 @@ function sharePrediction() {
   const btn = document.getElementById('btn-share');
   const originalText = btn.innerHTML;
   btn.innerHTML = '⏳ Hazırlanıyor...';
-
+  
   // Capture the entire app instead of just the standings, so match predictions are included.
   const target = document.querySelector('.app-container');
-
-  html2canvas(target, {
-    backgroundColor: '#0B0E14',
+  
+  html2canvas(target, { 
+    backgroundColor: '#0B0E14', 
     scale: 2,
     ignoreElements: (node) => {
       // Hide the buttons inside the screenshot so it looks cleaner
